@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     type: "website",
   },
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
   twitter: {
     card: "summary_large_image",
     title: "Sak Clinic - Лечение позвоночника и суставов",
