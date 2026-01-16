@@ -72,5 +72,17 @@ export const services = [
         color: "text-emerald-600",
         bg: "bg-emerald-50",
         featured: false
+    },
+    {
+        id: "ultrasound",
+        title: "УЗИ суставов",
+        price: "7 000 ₸",
+        rawPrice: 7000,
+        desc: "Точная диагностика состояния суставов и связок.",
+        fullDesc: "Ультразвуковое исследование суставов (УЗИ). Позволяет увидеть воспаление, жидкость, разрывы связок и состояние хряща без облучения.",
+        iconPath: "/icons/ultrasound.png",
+        color: "text-sky-600",
+        bg: "bg-sky-50",
+        featured: false
     }
 ];

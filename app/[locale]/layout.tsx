@@ -5,6 +5,7 @@ import { routing } from '@/i18n/routing';
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 const inter = Inter({
     subsets: ["latin", "cyrillic"],
@@ -84,6 +85,7 @@ export default async function LocaleLayout({
 
                 <NextIntlClientProvider messages={messages}>
                     {children}
+                    <WhatsAppButton />
                 </NextIntlClientProvider>
             </body>
         </html>
