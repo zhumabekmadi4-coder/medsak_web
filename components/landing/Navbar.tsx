@@ -39,9 +39,11 @@ export function Navbar() {
             >
                 <div className="container px-4 md:px-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">
-                            S
-                        </div>
+                        <img
+                            src="/logo.png"
+                            alt="Sak Clinic Logo"
+                            className="h-12 w-12 md:h-14 md:w-14"
+                        />
                         <span className={cn("text-xl font-bold tracking-tight", scrolled ? "text-slate-900" : "text-slate-900")}>
                             Sak Clinic
                         </span>
