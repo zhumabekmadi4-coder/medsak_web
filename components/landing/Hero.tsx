@@ -52,8 +52,14 @@ export function Hero() {
 
                     <div className="flex items-center gap-4 text-sm text-slate-500 pt-8" >
                         <div className="flex -space-x-3">
-                            {[1, 2, 3, 4].map(i => (
-                                <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 shadow-sm" />
+                            {[12, 45, 32, 21].map((i) => (
+                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden relative`}>
+                                    <img
+                                        src={`https://i.pravatar.cc/150?img=${i}`}
+                                        alt="Patient"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
                             ))}
                         </div>
                         <AnimatedCounter />
