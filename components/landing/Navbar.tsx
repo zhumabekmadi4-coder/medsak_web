@@ -4,12 +4,16 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const t = useTranslations('nav');
+    const tHero = useTranslations('hero');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -20,11 +24,11 @@ export function Navbar() {
     }, []);
 
     const navLinks = [
-        { name: "О клинике", href: "/#about" },
-        { name: "Услуги", href: "/#services" },
-        { name: "Прайс", href: "/pricing" },
-        { name: "Врачи", href: "/#doctors" },
-        { name: "Контакты", href: "/#contact" },
+        { name: t('about'), href: "/#about" },
+        { name: t('services'), href: "/#services" },
+        { name: t('pricing'), href: "/pricing" },
+        { name: t('team'), href: "/#doctors" },
+        { name: t('contact'), href: "/#contact" },
     ];
 
     return (
@@ -50,7 +54,7 @@ export function Navbar() {
                     </Link>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden md:flex items-center gap-8">
+                    <nav className="hidden md:flex items-center gap-6">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -60,9 +64,10 @@ export function Navbar() {
                                 {link.name}
                             </Link>
                         ))}
+                        <LanguageSwitcher />
                         <Button size="sm" className="rounded-full bg-secondary hover:bg-secondary/90 text-slate-900 font-semibold shadow-none border border-secondary/20">
                             <Phone className="w-4 h-4 mr-2" />
-                            +7 (776) 020-21-40
+                            {tHero('phone')}
                         </Button>
                     </nav>
 
@@ -94,7 +99,7 @@ export function Navbar() {
                                 </Link>
                             ))}
                             <Button className="w-full bg-primary text-white">
-                                Записаться на прием
+                                {t('bookButton') || 'Записаться на прием'}
                             </Button>
                         </nav>
                     </motion.div>

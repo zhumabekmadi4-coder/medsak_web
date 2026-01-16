@@ -4,8 +4,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Phone, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useTranslations } from 'next-intl';
 
 export function Hero() {
+    const t = useTranslations('hero');
+
     return (
         <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
             {/* Background is now global in layout.tsx */}
@@ -21,15 +24,14 @@ export function Hero() {
 
 
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] pt-4 md:pt-0">
-                        Капитальный ремонт <br />
+                        {t('title').split(' ').slice(0, -2).join(' ')} <br />
                         <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
-                            вашего здоровья
+                            {t('title').split(' ').slice(-2).join(' ')}
                         </span>
                     </h1>
 
                     <p className="text-xl text-slate-600 max-w-lg leading-relaxed font-medium">
-                        Мы подходим к лечению как инженеры: точно, системно и с гарантией.
-                        Уникальные методики восстановления позвоночника и суставов без операций.
+                        {t('subtitle')}
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-6">
@@ -41,13 +43,13 @@ export function Hero() {
                         >
                             <Button size="lg" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-xl shadow-blue-500/20 transition-transform active:scale-95">
                                 <Calendar className="mr-2 h-5 w-5" />
-                                Запись на прием
+                                {t('bookAppointment')}
                             </Button>
                         </a>
                         <a href="tel:+77760202140" className="w-full sm:w-auto">
                             <Button size="lg" variant="outline" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold border-2 border-slate-200 bg-white/50 hover:bg-white text-slate-700">
                                 <Phone className="mr-2 h-5 w-5" />
-                                +7 (776) 020-21-40
+                                {t('phone')}
                             </Button>
                         </a>
                     </div>
@@ -77,6 +79,7 @@ export function Hero() {
 function AnimatedCounter() {
     const [count, setCount] = useState(5000);
     const [mounted, setMounted] = useState(false);
+    const t = useTranslations('hero');
 
     useEffect(() => {
         setMounted(true);
@@ -100,7 +103,7 @@ function AnimatedCounter() {
                         <span className="text-xs font-bold text-primary">+</span>
                     </div>
                     <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                        Пациентов
+                        {t('patientsRecovered')}
                     </span>
                 </div>
             </div>
@@ -117,7 +120,7 @@ function AnimatedCounter() {
                     <span className="text-xs font-bold text-primary">+</span>
                 </div>
                 <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                    Пациентов
+                    {t('patientsRecovered')}
                 </span>
             </div>
             <div className="relative flex h-3 w-3">

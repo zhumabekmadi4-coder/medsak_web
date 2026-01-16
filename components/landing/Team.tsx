@@ -3,20 +3,24 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from 'next-intl';
 
 import { doctors } from "@/data/doctors";
 
 export function Team() {
+    const t = useTranslations('team');
+    const tDoctors = useTranslations('doctors_data');
+
     return (
         <section className="py-24 bg-white relative overflow-hidden" id="doctors">
             <div className="container px-4 md:px-6 relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5 px-4 py-1">Наши специалисты</Badge>
+                    <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5 px-4 py-1">{t('badge')}</Badge>
                     <h2 className="text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl text-slate-900">
-                        Забота от <span className="text-primary">профессионалов</span>
+                        {t('title')} <span className="text-primary">{t('titleHighlight')}</span>
                     </h2>
                     <p className="text-lg text-slate-600">
-                        Врачи высшей категории с многолетним опытом работы. Мы сопровождаем вас на каждом этапе выздоровления.
+                        {t('subtitle')}
                     </p>
                 </div>
 
@@ -35,25 +39,25 @@ export function Team() {
                                     {doctor.image ? (
                                         <img
                                             src={doctor.image}
-                                            alt={doctor.name}
+                                            alt={tDoctors(`${doctor.id}.name`)}
                                             className="w-full h-full object-cover"
                                             onError={(e) => {
                                                 e.currentTarget.style.display = 'none';
-                                                e.currentTarget.parentElement!.innerText = doctor.name[0];
+                                                e.currentTarget.parentElement!.innerText = tDoctors(`${doctor.id}.name`)[0];
                                             }}
                                         />
                                     ) : (
-                                        doctor.name[0]
+                                        tDoctors(`${doctor.id}.name`)[0]
                                     )}
                                 </div>
 
                                 <CardContent className="text-center pt-6 pb-8">
-                                    <h3 className="text-xl font-bold text-slate-900 mb-2">{doctor.name}</h3>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">{tDoctors(`${doctor.id}.name`)}</h3>
                                     <div className="inline-block bg-white text-slate-600 px-3 py-1 rounded-full text-sm shadow-sm border border-slate-100 mb-4">
-                                        {doctor.specialty}
+                                        {tDoctors(`${doctor.id}.specialty`)}
                                     </div>
                                     <p className="text-sm font-medium text-slate-500">
-                                        {doctor.experience}
+                                        {tDoctors(`${doctor.id}.experience`)}
                                     </p>
                                 </CardContent>
                             </Card>

@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
@@ -11,13 +12,16 @@ import { services } from "@/data/services";
 const displayedServices = services.filter(s => s.featured);
 
 export function Services() {
+    const t = useTranslations('services');
+    const tServices = useTranslations('services_data');
+
     return (
         <section className="py-24 bg-white/60 backdrop-blur-sm relative" id="services">
             <div className="container px-4 md:px-6">
                 <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">Наши Услуги</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">{t('title')}</h2>
                     <p className="text-lg text-slate-600">
-                        Мы используем проверенные методики и современное оборудование для вашего здоровья.
+                        {t('subtitle')}
                     </p>
                 </div>
 
@@ -35,16 +39,16 @@ export function Services() {
                                         <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center mb-4 overflow-hidden`}>
                                             <img
                                                 src={item.iconPath}
-                                                alt={item.title}
+                                                alt={tServices(`${item.id}.title`)}
                                                 className="w-10 h-10 object-contain"
                                             />
                                         </div>
                                         <CardTitle className="text-xl font-bold text-slate-900">
-                                            {item.title}
+                                            {tServices(`${item.id}.title`)}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-slate-500 mb-4">{item.desc}</p>
+                                        <p className="text-slate-500 mb-4">{tServices(`${item.id}.desc`)}</p>
                                         <div className="text-2xl font-bold text-primary">
                                             {item.price}
                                         </div>
@@ -52,7 +56,7 @@ export function Services() {
                                     <CardFooter>
                                         <Link href="/pricing" className="w-full">
                                             <Button className="w-full rounded-xl bg-slate-100 text-slate-900 hover:bg-primary hover:text-white transition-colors">
-                                                Подробнее
+                                                {t('learnMore')}
                                             </Button>
                                         </Link>
                                     </CardFooter>

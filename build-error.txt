@@ -1,0 +1,40 @@
+
+> medsak-web@0.1.0 build
+> next build
+
+тЦ▓ Next.js 16.1.2 (Turbopack)
+
+тЪа The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./components/landing/Navbar.tsx:43:13
+Parsing ecmascript source code failed
+  41 |                 scrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
+  42 |             )}
+> 43 |             >
+     |             ^
+  44 |             <div className="container px-4 md:px-6 flex items-center justify-between">
+  45 |                 <Link href="/" className="flex items-center gap-2">
+  46 |                     <img
+
+Unexpected token. Did you mean `{'>'}` or `&gt;`?
+
+Import traces:
+  Server Component:
+    ./components/landing/Navbar.tsx
+    ./app/page.tsx
+
+  Client Component Browser:
+    ./components/landing/Navbar.tsx [Client Component Browser]
+    ./app/[locale]/about/page.tsx [Client Component Browser]
+    ./app/[locale]/about/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/landing/Navbar.tsx [Client Component SSR]
+    ./app/[locale]/about/page.tsx [Client Component SSR]
+    ./app/[locale]/about/page.tsx [Server Component]
+
+
+    at <unknown> (./components/landing/Navbar.tsx:43:13)

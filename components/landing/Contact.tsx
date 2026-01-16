@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Instagram, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Instagram, Clock, Send, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from 'next-intl';
 
 export function Contact() {
+    const t = useTranslations('contact');
+
     return (
         <footer className="bg-slate-900 text-white py-16 lg:py-24 overflow-hidden relative" id="contact">
             {/* Background Pattern */}
@@ -19,23 +22,25 @@ export function Contact() {
                     <div className="space-y-8">
                         <div>
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-white mb-4">
-                                Свяжитесь с нами
+                                {t('title')}
                             </h2>
                             <p className="text-slate-400 text-lg">
-                                Готовы начать путь к выздоровлению? <br />
-                                Запишитесь на консультацию прямо сейчас.
+                                {t('subtitle')}
                             </p>
                         </div>
 
+
                         <div className="space-y-6">
-                            <ContactItem icon={MapPin} title="Наш адрес" text="г. Караганда, ул. Абая 81" />
-                            <ContactItem icon={Phone} title="Телефон" text="+7 (776) 020-21-40" href="tel:+77760202140" />
-                            <ContactItem icon={Mail} title="Email" text="sakclinic2025@gmail.com" href="mailto:sakclinic2025@gmail.com" />
-                            <ContactItem icon={Clock} title="Режим работы" text="Пн-Сб: 09:00 - 18:00 (Вс: выходной)" />
+                            <ContactItem icon={MapPin} title={t('address')} text={t('addressValue')} />
+                            <ContactItem icon={Phone} title={t('phone')} text="+7 (776) 020-21-40" href="tel:+77760202140" />
+                            <ContactItem icon={Mail} title={t('email')} text="sakclinic2025@gmail.com" href="mailto:sakclinic2025@gmail.com" />
+                            <ContactItem icon={Clock} title={t('hours')} text={t('hoursValue')} />
                         </div>
 
+
                         <div className="flex gap-4 pt-4">
-                            <SocialButton icon={Instagram} href="https://instagram.com/sakclinic" label="Instagram" />
+                            <SocialButton icon={Instagram} href="https://www.instagram.com/sak_karaganda" label="Instagram" />
+                            <SocialButton icon={Youtube} href="https://www.youtube.com/@sakclinic09" label="YouTube" />
                             <SocialButton icon={Send} href="https://wa.me/77760202140" label="WhatsApp" />
                         </div>
                     </div>
@@ -49,17 +54,17 @@ export function Contact() {
                         />
                         <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
                             <Button className="w-full bg-white/90 text-slate-900 hover:bg-white pointer-events-auto shadow-lg" onClick={() => window.open('https://go.2gis.com/jPMKm', '_blank')}>
-                                Открыть в 2GIS
+                                {t('openIn2GIS')}
                             </Button>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-20 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
-                    <p>© {new Date().getFullYear()} Sak Clinic. Все права защищены.</p>
+                    <p>{t('copyright', { year: new Date().getFullYear() })}</p>
                     <div className="flex gap-6">
-                        <span className="cursor-pointer hover:text-white transition-colors">Лицензия</span>
-                        <span className="cursor-pointer hover:text-white transition-colors">Политика конфиденциальности</span>
+                        <span className="cursor-pointer hover:text-white transition-colors">{t('license')}</span>
+                        <span className="cursor-pointer hover:text-white transition-colors">{t('privacy')}</span>
                     </div>
                 </div>
             </div>

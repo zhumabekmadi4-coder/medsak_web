@@ -5,8 +5,12 @@ import { Navbar } from "@/components/landing/Navbar";
 import { Contact } from "@/components/landing/Contact";
 import { services } from "@/data/services";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from 'next-intl';
 
 export default function PricingPage() {
+    const t = useTranslations('pricing');
+    const tServices = useTranslations('services_data');
+
     return (
         <main className="min-h-screen bg-slate-50">
             <Navbar />
@@ -14,9 +18,9 @@ export default function PricingPage() {
             {/* Header */}
             <section className="pt-32 pb-16 px-4 bg-white/60 backdrop-blur-sm">
                 <div className="container mx-auto text-center max-w-3xl">
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Стоимость Лечения</h1>
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">{t('title')}</h1>
                     <p className="text-lg text-slate-600">
-                        Честные цены без скрытых доплат. Мы подбираем только то лечение, которое вам действительно необходимо.
+                        {t('subtitle')}
                     </p>
                 </div>
             </section>
@@ -36,37 +40,37 @@ export default function PricingPage() {
                                 <div className={`w-12 h-12 rounded-xl ${service.bg} flex items-center justify-center mb-6 overflow-hidden`}>
                                     <img
                                         src={service.iconPath}
-                                        alt={service.title}
+                                        alt={tServices(`${service.id}.title`)}
                                         className="w-8 h-8 object-contain"
                                     />
                                 </div>
-                                <h3 className="text-2xl font-bold text-slate-900 mb-2">{service.title}</h3>
+                                <h3 className="text-2xl font-bold text-slate-900 mb-2">{tServices(`${service.id}.title`)}</h3>
                                 <p className="text-3xl font-bold text-primary mb-6">{service.price}</p>
-                                <p className="text-slate-600 mb-6 flex-grow">{service.fullDesc || service.desc}</p>
+                                <p className="text-slate-600 mb-6 flex-grow">{tServices(`${service.id}.fullDesc`) || tServices(`${service.id}.desc`)}</p>
 
                                 <ul className="space-y-3 mb-8 text-sm text-slate-500">
                                     <li className="flex items-center gap-2">
                                         <span className="w-4 h-4 text-green-500">✓</span>
-                                        <span>Консультация специалиста</span>
+                                        <span>{t('benefits.consultation')}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <span className="w-4 h-4 text-green-500">✓</span>
-                                        <span>Индивидуальный план</span>
+                                        <span>{t('benefits.plan')}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <span className="w-4 h-4 text-green-500">✓</span>
-                                        <span>Сопровождение 24/7</span>
+                                        <span>{t('benefits.support')}</span>
                                     </li>
                                 </ul>
 
                                 <a
-                                    href={`https://wa.me/77760202140?text=Хочу записаться на: ${service.title}`}
+                                    href={`https://wa.me/77760202140?text=${t('bookButton')}: ${tServices(`${service.id}.title`)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="block w-full"
                                 >
                                     <Button className="w-full rounded-xl bg-slate-900 text-white hover:bg-primary">
-                                        Записаться
+                                        {t('bookButton')}
                                     </Button>
                                 </a>
                             </motion.div>
