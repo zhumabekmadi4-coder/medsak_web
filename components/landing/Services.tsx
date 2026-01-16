@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Activity, Bone, HeartPulse, User } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -24,18 +23,21 @@ export function Services() {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {displayedServices.map((item, i) => {
-                        const Icon = item.icon;
                         return (
                             <motion.div
-                                key={i}
+                                key={item.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1 }}
                             >
                                 <Card className="h-full border-none shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                                     <CardHeader>
-                                        <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center mb-4`}>
-                                            <Icon className={`w-7 h-7 ${item.color}`} />
+                                        <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center mb-4 overflow-hidden`}>
+                                            <img
+                                                src={item.iconPath}
+                                                alt={item.title}
+                                                className="w-10 h-10 object-contain"
+                                            />
                                         </div>
                                         <CardTitle className="text-xl font-bold text-slate-900">
                                             {item.title}

@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/landing/Navbar";
 import { Contact } from "@/components/landing/Contact";
 import { services } from "@/data/services";
-import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function PricingPage() {
@@ -26,7 +25,6 @@ export default function PricingPage() {
             <section className="py-12 bg-transparent container mx-auto px-4">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service, index) => {
-                        const Icon = service.icon;
                         return (
                             <motion.div
                                 key={service.id}
@@ -35,8 +33,12 @@ export default function PricingPage() {
                                 transition={{ delay: index * 0.1 }}
                                 className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-8 border border-slate-100 flex flex-col"
                             >
-                                <div className={`w-12 h-12 rounded-xl ${service.bg} flex items-center justify-center mb-6`}>
-                                    <Icon className={`w-6 h-6 ${service.color}`} />
+                                <div className={`w-12 h-12 rounded-xl ${service.bg} flex items-center justify-center mb-6 overflow-hidden`}>
+                                    <img
+                                        src={service.iconPath}
+                                        alt={service.title}
+                                        className="w-8 h-8 object-contain"
+                                    />
                                 </div>
                                 <h3 className="text-2xl font-bold text-slate-900 mb-2">{service.title}</h3>
                                 <p className="text-3xl font-bold text-primary mb-6">{service.price}</p>
@@ -44,20 +46,20 @@ export default function PricingPage() {
 
                                 <ul className="space-y-3 mb-8 text-sm text-slate-500">
                                     <li className="flex items-center gap-2">
-                                        <Check className="w-4 h-4 text-green-500" />
+                                        <span className="w-4 h-4 text-green-500">✓</span>
                                         <span>Консультация специалиста</span>
                                     </li>
                                     <li className="flex items-center gap-2">
-                                        <Check className="w-4 h-4 text-green-500" />
+                                        <span className="w-4 h-4 text-green-500">✓</span>
                                         <span>Индивидуальный план</span>
                                     </li>
                                     <li className="flex items-center gap-2">
-                                        <Check className="w-4 h-4 text-green-500" />
+                                        <span className="w-4 h-4 text-green-500">✓</span>
                                         <span>Сопровождение 24/7</span>
                                     </li>
                                 </ul>
 
-                                <a 
+                                <a
                                     href={`https://wa.me/77760202140?text=Хочу записаться на: ${service.title}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
