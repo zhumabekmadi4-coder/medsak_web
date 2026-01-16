@@ -42,22 +42,11 @@ export function Contact() {
 
                     {/* Right Column: Map or Form */}
                     <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 h-[400px] relative bg-slate-800">
-                        {/* Map Placeholder - In real app use Google Maps Embed or Leaflet */}
-                        <div className="absolute inset-0 flex items-center justify-center bg-slate-800 text-slate-500 text-sm">
-                            <div className="text-center space-y-2">
-                                <MapPin className="w-12 h-12 mx-auto text-primary animate-bounce opacity-80" />
-                                <p>Карта загружается...</p>
-                                <p className="text-xs text-slate-600">ул. Абая 81, Караганда</p>
-                            </div>
-                        </div>
-                        {/* Overlay for vibe */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60 pointer-events-none" />
-
-                        <div className="absolute bottom-6 left-6 right-6">
-                            <Button className="w-full bg-white text-slate-900 hover:bg-slate-200" onClick={() => window.open('https://go.2gis.com/something', '_blank')}>
-                                Открыть в 2GIS / Яндекс.Карты
-                            </Button>
-                        </div>
+                        <iframe
+                            src="https://widgets.2gis.com/widget?type=firms&firmId=70000001046168882"
+                            className="w-full h-full border-none"
+                            title="Sak Clinic on 2GIS"
+                        />
                     </div>
                 </div>
 
