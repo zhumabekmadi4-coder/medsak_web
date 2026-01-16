@@ -43,10 +43,15 @@ export function Contact() {
                     {/* Right Column: Map or Form */}
                     <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 h-[400px] relative bg-slate-800">
                         <iframe
-                            src="https://widgets.2gis.com/widget?type=firms&firmId=70000001046168882"
+                            src="https://widgets.2gis.com/widget?type=common&map=73.088504%2C49.806484%2F16"
                             className="w-full h-full border-none"
                             title="Sak Clinic on 2GIS"
                         />
+                        <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
+                            <Button className="w-full bg-white/90 text-slate-900 hover:bg-white pointer-events-auto shadow-lg" onClick={() => window.open('https://2gis.kz/karaganda/firm/70000001046168882', '_blank')}>
+                                Открыть в 2GIS
+                            </Button>
+                        </div>
                     </div>
                 </div>
 
