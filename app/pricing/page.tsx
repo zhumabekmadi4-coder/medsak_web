@@ -57,9 +57,16 @@ export default function PricingPage() {
                                     </li>
                                 </ul>
 
-                                <Button className="w-full rounded-xl bg-slate-900 text-white hover:bg-primary">
-                                    Записаться
-                                </Button>
+                                <a 
+                                    href={`https://wa.me/77760202140?text=Хочу записаться на: ${service.title}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block w-full"
+                                >
+                                    <Button className="w-full rounded-xl bg-slate-900 text-white hover:bg-primary">
+                                        Записаться
+                                    </Button>
+                                </a>
                             </motion.div>
                         );
                     })}

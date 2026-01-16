@@ -44,10 +44,12 @@ export function Hero() {
                                 Запись на прием
                             </Button>
                         </a>
-                        <Button size="lg" variant="outline" className="rounded-2xl h-14 md:h-16 px-8 text-lg font-bold border-2 border-slate-200 bg-white/50 hover:bg-white text-slate-700 w-full sm:w-auto cursor-default">
-                            <Phone className="mr-2 h-5 w-5" />
-                            +7 (776) 020-21-40
-                        </Button>
+                        <a href="tel:+77760202140" className="w-full sm:w-auto">
+                            <Button size="lg" variant="outline" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold border-2 border-slate-200 bg-white/50 hover:bg-white text-slate-700">
+                                <Phone className="mr-2 h-5 w-5" />
+                                +7 (776) 020-21-40
+                            </Button>
+                        </a>
                     </div>
 
                     <div className="flex items-center gap-4 text-sm text-slate-500 pt-8" >

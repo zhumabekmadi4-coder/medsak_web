@@ -9,8 +9,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Medsak | Клиника восстановительной медицины",
-  description: "Лечение позвоночника и суставов без операции в Караганде.",
+  title: "Sak Clinic | Лечение позвоночника и суставов без операций в Караганде",
+  description: "Капитальный ремонт вашего здоровья. Уникальные методики восстановления позвоночника и суставов без операций. Более 5000 пациентов восстановлено.",
+  keywords: ["лечение позвоночника Караганда", "лечение суставов", "SVF терапия", "PRP терапия", "безоперационное лечение", "клиника Караганда"],
+  openGraph: {
+    title: "Sak Clinic - Клиника восстановления в Караганде",
+    description: "Более 5000 пациентов восстановлено. Лечение позвоночника, суставов, SVF и PRP терапия.",
+    url: "https://medsak-web.vercel.app",
+    siteName: "Sak Clinic",
+    images: [{
+      url: "/og-image.png",
+      width: 1200,
+      height: 630,
+      alt: "Sak Clinic - Лечение позвоночника и суставов"
+    }],
+    locale: "ru_RU",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sak Clinic - Лечение позвоночника и суставов",
+    description: "Капитальный ремонт вашего здоровья. 5000+ пациентов восстановлено.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
@@ -37,6 +58,36 @@ export default function RootLayout({
           {/* Overlay */}
           <div className="absolute inset-0 bg-white/40" />
         </div>
+
+        {/* Schema.org Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "MedicalClinic",
+              "name": "Sak Clinic",
+              "description": "Клиника восстановительной медицины. Лечение позвоночника и суставов без операций.",
+              "url": "https://medsak-web.vercel.app",
+              "telephone": "+77760202140",
+              "email": "sakclinic2025@gmail.com",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "ул. Абая 81",
+                "addressLocality": "Караганда",
+                "addressCountry": "KZ"
+              },
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                "opens": "09:00",
+                "closes": "18:00"
+              },
+              "priceRange": "7000₸ - 250000₸",
+              "medicalSpecialty": ["Orthopedics", "PhysicalTherapy", "PainMedicine"]
+            })
+          }}
+        />
 
         {children}
       </body>
