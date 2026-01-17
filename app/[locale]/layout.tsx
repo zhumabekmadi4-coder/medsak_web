@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { Analytics } from "@/components/Analytics";
 
 const inter = Inter({
     subsets: ["latin", "cyrillic"],
@@ -53,6 +54,11 @@ export default async function LocaleLayout({
                     <div className="absolute inset-0 bg-white/40" />
                 </div>
 
+                {/* Hreflang tags for language versions */}
+                <link rel="alternate" hrefLang="ru" href={`https://sakclinic.kz/ru`} />
+                <link rel="alternate" hrefLang="kk" href={`https://sakclinic.kz/kk`} />
+                <link rel="alternate" hrefLang="x-default" href={`https://sakclinic.kz/ru`} />
+
                 {/* Schema.org Structured Data */}
                 <script
                     type="application/ld+json"
@@ -62,7 +68,7 @@ export default async function LocaleLayout({
                             "@type": "MedicalClinic",
                             "name": "Sak Clinic",
                             "description": "Клиника восстановительной медицины. Лечение позвоночника и суставов без операций.",
-                            "url": "https://medsak-web.vercel.app",
+                            "url": "https://sakclinic.kz",
                             "telephone": "+77760202140",
                             "email": "sakclinic2025@gmail.com",
                             "address": {
@@ -86,6 +92,7 @@ export default async function LocaleLayout({
                 <NextIntlClientProvider messages={messages}>
                     {children}
                     <WhatsAppButton />
+                    <Analytics />
                 </NextIntlClientProvider>
             </body>
         </html>

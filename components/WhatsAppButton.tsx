@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { trackEvent } from "./Analytics";
 
 export const WhatsAppButton = () => {
     const t = useTranslations("whatsapp");
@@ -51,6 +52,7 @@ export const WhatsAppButton = () => {
                 className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-3.5 md:p-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center group"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
+                onClick={() => trackEvent('whatsapp_click', { location: 'floating_button' })}
                 aria-label="Contact us on WhatsApp"
             >
                 <svg

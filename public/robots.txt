@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://sakclinic.kz/sitemap.xml
+
+# Disallow admin or private paths (if any in the future)
+# Disallow: /admin/
