@@ -1,13 +1,14 @@
 
 
+
 export const services = [
     {
         id: "consultation",
         title: "Первичная Консультация",
-        price: "7 000 ₸",
-        rawPrice: 7000,
-        desc: "Осмотр врача, сбор анамнеза, составление плана лечения.",
-        fullDesc: "Включает полный осмотр опорно-двигательного аппарата, анализ снимков МРТ/КТ и постановку предварительного диагноза.",
+        price: "10 000 ₸",
+        rawPrice: 10000,
+        desc: "Осмотр врача, узи сустава или одна пробная процедура.",
+        fullDesc: "Включает полный осмотр опорно-двигательного аппарата, анализ снимков МРТ/КТ, УЗИ сустава или одну пробную процедуру лечения.",
         iconPath: "/icons/consultation.png",
         color: "text-slate-600",
         bg: "bg-slate-100",
@@ -28,8 +29,8 @@ export const services = [
     {
         id: "knee",
         title: "Коленный сустав",
-        price: "30 000 ₸",
-        rawPrice: 30000,
+        price: "25 000 ₸",
+        rawPrice: 25000,
         desc: "Снятие боли и возвращение подвижности без операции.",
         fullDesc: "Безоперационное лечение артроза, артрита и травм мениска. Включает ударно-волновую терапию и лазер.",
         iconPath: "/icons/knee.png",
@@ -40,8 +41,8 @@ export const services = [
     {
         id: "shoulder",
         title: "Плечевой сустав",
-        price: "27 000 ₸",
-        rawPrice: 27000,
+        price: "23 000 ₸",
+        rawPrice: 23000,
         desc: "Лечение артрозов и травм. Возврат амплитуды.",
         fullDesc: "Восстановление при плечелопаточном периартрите, травмах вращательной манжеты и привычных вывихах.",
         iconPath: "/icons/shoulder.png",
@@ -83,6 +84,18 @@ export const services = [
         iconPath: "/icons/ultrasound.png",
         color: "text-sky-600",
         bg: "bg-sky-50",
+        featured: false
+    },
+    {
+        id: "blockade",
+        title: "Блокада сустава",
+        price: "10 000 ₸",
+        rawPrice: 10000,
+        desc: "Мгновенное снятие острой боли и воспаления.",
+        fullDesc: "Медикаментозная блокада для быстрого купирования болевого синдрома. Выполняется под контролем врача.",
+        iconPath: "/icons/injection.png",
+        color: "text-amber-600",
+        bg: "bg-amber-50",
         featured: false
     }
 ];

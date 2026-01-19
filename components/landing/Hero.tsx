@@ -56,10 +56,10 @@ export function Hero() {
 
                     <div className="flex items-center gap-4 text-sm text-slate-500 pt-8" >
                         <div className="flex -space-x-3">
-                            {[12, 45, 32, 21].map((i) => (
+                            {['avatar_asian_1.png', 'avatar_asian_2.png', 'avatar_asian_3.png', 'avatar_asian_4.png'].map((img, i) => (
                                 <div key={i} className={`w-10 h-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden relative`}>
                                     <img
-                                        src={`https://i.pravatar.cc/150?img=${i}`}
+                                        src={`/images/avatars/${img}`}
                                         alt="Patient"
                                         className="w-full h-full object-cover"
                                     />
@@ -86,7 +86,7 @@ function AnimatedCounter() {
         const interval = setInterval(() => {
             // Random increment between 3 and 22
             setCount(prev => prev + Math.floor(Math.random() * (22 - 3 + 1) + 3));
-        }, 3000);
+        }, 12000); // 4x slower than 3000
 
         return () => clearInterval(interval);
     }, []);
