@@ -23,10 +23,10 @@ export function Hero() {
                     {/* Logo Emblem */}
 
 
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] pt-4 md:pt-0">
-                        {t('title').split(' ').slice(0, -2).join(' ')} <br />
-                        <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
-                            {t('title').split(' ').slice(-2).join(' ')}
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] pt-4 md:pt-0 font-heading text-slate-900">
+                        {t('title_start')} <br />
+                        <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                            {t('title_highlight')}
                         </span>
                     </h1>
 
@@ -41,13 +41,13 @@ export function Hero() {
                             rel="noopener noreferrer"
                             className="w-full sm:w-auto"
                         >
-                            <Button size="lg" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-xl shadow-blue-500/20 transition-transform active:scale-95">
+                            <Button size="lg" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold bg-accent hover:bg-accent/90 text-white shadow-xl shadow-orange-500/20 transition-transform active:scale-95">
                                 <Calendar className="mr-2 h-5 w-5" />
                                 {t('bookAppointment')}
                             </Button>
                         </a>
                         <a href="tel:+77760202140" className="w-full sm:w-auto">
-                            <Button size="lg" variant="outline" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold border-2 border-slate-200 bg-white/50 hover:bg-white text-slate-700">
+                            <Button size="lg" variant="outline" className="w-full rounded-2xl h-14 md:h-16 px-8 text-lg font-bold border-2 border-primary/20 text-primary bg-white/50 hover:bg-primary/5 hover:border-primary">
                                 <Phone className="mr-2 h-5 w-5" />
                                 {t('phone')}
                             </Button>
@@ -57,7 +57,7 @@ export function Hero() {
                     <div className="flex items-center gap-4 text-sm text-slate-500 pt-8" >
                         <div className="flex -space-x-3">
                             {['avatar_asian_1.png', 'avatar_asian_2.png', 'avatar_asian_3.png', 'avatar_asian_4.png'].map((img, i) => (
-                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden relative`}>
+                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden relative shadow-sm`}>
                                     <img
                                         src={`/images/avatars/${img}`}
                                         alt="Patient"

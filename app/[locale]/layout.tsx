@@ -2,15 +2,23 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { Inter } from "next/font/google";
+import { Figtree, Noto_Sans } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { MobileStickyNav } from "@/components/layout/MobileStickyNav";
 import { Analytics } from "@/components/Analytics";
 
-const inter = Inter({
+const figtree = Figtree({
+    subsets: ["latin"],
+    variable: "--font-figtree",
+    display: "swap",
+});
+
+const notoSans = Noto_Sans({
     subsets: ["latin", "cyrillic"],
-    variable: "--font-sans",
+    variable: "--font-noto-sans",
+    display: "swap",
 });
 
 export function generateStaticParams() {
@@ -28,6 +36,7 @@ export default async function LocaleLayout({
     const { locale } = await params;
 
     // Ensure that the incoming `locale` is valid
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!routing.locales.includes(locale as any)) {
         notFound();
     }
@@ -40,8 +49,9 @@ export default async function LocaleLayout({
         <html lang={locale} suppressHydrationWarning className="bg-transparent">
             <body
                 className={cn(
-                    "min-h-screen font-sans antialiased relative bg-transparent",
-                    inter.variable
+                    "min-h-screen font-sans antialiased relative bg-transparent overflow-x-hidden",
+                    figtree.variable,
+                    notoSans.variable
                 )}
             >
                 {/* Site-wide Fixed Background */}
@@ -91,6 +101,7 @@ export default async function LocaleLayout({
 
                 <NextIntlClientProvider messages={messages}>
                     {children}
+                    <MobileStickyNav />
                     <WhatsAppButton />
                     <Analytics />
                 </NextIntlClientProvider>
