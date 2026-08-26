@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sak Clinic — лечение позвоночника и суставов в Караганде</title>
+    <meta name="robots" content="noindex,follow">
+    <link rel="canonical" href="https://sakclinic.kz/ru/">
+    <!--
+      The site root has no page of its own: every URL carries a /ru or /kk
+      prefix and there is no server to redirect. The server-side rule in
+      .htaccess handles this first; this file is the fallback when the host
+      does not allow rewrites.
+    -->
+    <meta http-equiv="refresh" content="0; url=/ru/">
+    <script>
+        (function () {
+            var target = 'ru';
+            try {
+                var lang = (navigator.language || '').toLowerCase();
+                if (lang.indexOf('kk') === 0 || lang.indexOf('kz') === 0) target = 'kk';
+            } catch (e) { }
+            location.replace('/' + target + '/');
+        })();
+    </script>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: #F8FAFC;
+            color: #1E293B;
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a {
+            color: #1D4ED8;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Перенаправление… <a href="/ru/">Перейти на сайт</a></p>
+</body>
+
+</html>
