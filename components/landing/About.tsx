@@ -57,7 +57,7 @@ export function About() {
                             >
                                 <h4 className="text-xl font-bold text-slate-900 mb-6">{t('approach_title')}:</h4>
                                 <ul className="grid md:grid-cols-2 gap-4">
-                                    {['approach_1', 'approach_2', 'approach_3', 'approach_4', 'approach_5', 'approach_6', 'approach_7'].map((item, i) => (
+                                    {['approach_1', 'approach_2', 'approach_3', 'approach_4', 'approach_5', 'approach_6', 'approach_7'].map((item) => (
                                         <li key={item} className="flex items-start gap-3">
                                             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                                             <span>{t(item)}</span>

@@ -32,14 +32,22 @@ export function Services() {
                                 key={item.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
                             >
                                 <Card className="h-full border-none shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
                                     <CardHeader>
                                         <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center mb-4 overflow-hidden`}>
+                                            {/* Decorative: the service name is the CardTitle right below. */}
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={item.iconPath}
-                                                alt={tServices(`${item.id}.title`)}
+                                                alt=""
+                                                aria-hidden="true"
+                                                width={96}
+                                                height={96}
+                                                loading="lazy"
+                                                decoding="async"
                                                 className="w-6 h-6 object-contain"
                                             />
                                         </div>
@@ -48,7 +56,7 @@ export function Services() {
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="flex-1">
-                                        <p className="text-slate-500 mb-4">{tServices(`${item.id}.desc`)}</p>
+                                        <p className="text-slate-600 mb-4">{tServices(`${item.id}.desc`)}</p>
                                         {item.price && (
                                             <div className="text-2xl font-bold text-primary">
                                                 {item.price}

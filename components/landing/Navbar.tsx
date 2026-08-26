@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,10 +8,13 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SITE, waLink } from "@/lib/site-config";
+import { trackEvent } from "@/components/Analytics";
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const menuButtonRef = useRef<HTMLButtonElement>(null);
     const t = useTranslations('nav');
     const tHero = useTranslations('hero');
 
@@ -19,9 +22,24 @@ export function Navbar() {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
-        window.addEventListener("scroll", handleScroll);
+        // passive: the listener never calls preventDefault, and without this
+        // flag it blocks the scroll thread on every event.
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    // Close the mobile menu on Escape and return focus to the toggle.
+    useEffect(() => {
+        if (!mobileMenuOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                setMobileMenuOpen(false);
+                menuButtonRef.current?.focus();
+            }
+        };
+        document.addEventListener("keydown", onKey);
+        return () => document.removeEventListener("keydown", onKey);
+    }, [mobileMenuOpen]);
 
     const navLinks = [
         { name: t('about'), href: "/#about" },
@@ -32,24 +50,31 @@ export function Navbar() {
     ];
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        // If it's a hash link on the home page (or current page)
-        if (href.includes("#")) {
-            e.preventDefault();
-            const id = href.split("#")[1];
-            const element = document.getElementById(id);
-            if (element) {
-                const offset = 80; // Navbar height
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-            }
-            // Close mobile menu if open
+        if (!href.includes("#")) {
             setMobileMenuOpen(false);
+            return;
         }
+
+        const id = href.split("#")[1];
+        const element = document.getElementById(id);
+
+        // On /pricing or /contact the anchor does not exist. Previously the click
+        // was swallowed here and the link did nothing — let it navigate instead.
+        if (!element) {
+            setMobileMenuOpen(false);
+            return;
+        }
+
+        e.preventDefault();
+        const offset = 80; // Navbar height
+        const offsetPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: prefersReduced ? "auto" : "smooth",
+        });
+        setMobileMenuOpen(false);
     };
 
     return (
@@ -64,9 +89,13 @@ export function Navbar() {
             >
                 <div className="container px-4 md:px-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src="/logo.png"
-                            alt="Sak Clinic Logo"
+                            alt="Sak Clinic"
+                            width={48}
+                            height={48}
+                            fetchPriority="high"
                             className="h-10 w-10 md:h-12 md:w-12 transition-all duration-300"
                         />
                         <span className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 font-heading">
@@ -88,20 +117,37 @@ export function Navbar() {
                         ))}
                         <div className="flex items-center gap-4 pl-4 border-l border-slate-200">
                             <LanguageSwitcher />
-                            <a href="tel:+77760202140">
-                                <Button size="sm" className="rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-sm">
-                                    <Phone className="w-4 h-4 mr-2" />
+                            <Button
+                                asChild
+                                size="sm"
+                                className="rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-sm"
+                            >
+                                <a
+                                    href={SITE.phone.tel}
+                                    onClick={() => trackEvent('phone_click', { location: 'navbar' })}
+                                >
+                                    <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
                                     {tHero('phone')}
-                                </Button>
-                            </a>
+                                </a>
+                            </Button>
                         </div>
                     </nav>
 
                     {/* Mobile Menu Toggle */}
                     <div className="flex items-center gap-4 md:hidden">
                         <LanguageSwitcher />
-                        <button className="p-2 text-slate-900" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        <button
+                            ref={menuButtonRef}
+                            type="button"
+                            className="p-3 -mr-1 min-w-[48px] min-h-[48px] flex items-center justify-center text-slate-900 rounded-lg"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-expanded={mobileMenuOpen}
+                            aria-controls="mobile-menu"
+                            aria-label={mobileMenuOpen ? t('closeMenu') : t('openMenu')}
+                        >
+                            {mobileMenuOpen
+                                ? <X className="w-7 h-7" aria-hidden="true" />
+                                : <Menu className="w-7 h-7" aria-hidden="true" />}
                         </button>
                     </div>
                 </div>
@@ -111,6 +157,7 @@ export function Navbar() {
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <motion.div
+                        id="mobile-menu"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
@@ -128,14 +175,36 @@ export function Navbar() {
                                 </Link>
                             ))}
                             <div className="pt-4 mt-2 border-t border-slate-100 grid gap-3">
-                                <a href="tel:+77760202140" className="w-full">
-                                    <Button variant="outline" className="w-full justify-start border-slate-200">
-                                        <Phone className="w-4 h-4 mr-2 text-primary" />
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    className="w-full justify-start border-slate-200 min-h-[52px] text-base"
+                                >
+                                    <a
+                                        href={SITE.phone.tel}
+                                        onClick={() => trackEvent('phone_click', { location: 'mobile_menu' })}
+                                    >
+                                        <Phone className="w-4 h-4 mr-2 text-primary" aria-hidden="true" />
                                         {tHero('phone')}
-                                    </Button>
-                                </a>
-                                <Button className="w-full bg-accent hover:bg-accent/90 text-white font-bold">
-                                    {t('bookButton') || 'Записаться на прием'}
+                                    </a>
+                                </Button>
+                                {/* Was a bare <Button> with no href and a missing translation key,
+                                    so it rendered the literal text "nav.bookButton" and did nothing. */}
+                                <Button
+                                    asChild
+                                    className="w-full bg-accent hover:bg-accent/90 text-white font-bold min-h-[52px] text-base"
+                                >
+                                    <a
+                                        href={waLink(t('bookButton'))}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={() => {
+                                            trackEvent('whatsapp_click', { location: 'mobile_menu' });
+                                            setMobileMenuOpen(false);
+                                        }}
+                                    >
+                                        {t('bookButton')}
+                                    </a>
                                 </Button>
                             </div>
                         </nav>

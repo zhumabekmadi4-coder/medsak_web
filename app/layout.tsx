@@ -1,38 +1,35 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-config";
 
+// Global defaults only. Per-page titles, descriptions, canonical URLs and
+// hreflang come from generateMetadata via lib/seo.ts — previously this file was
+// the single source for the whole site, so all eight URLs shared one title and
+// the Kazakh pages carried Russian metadata.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sakclinic.kz"),
-  title: "Sak Clinic | Лечение позвоночника и суставов в Караганде",
-  description: "Капитальный ремонт вашего здоровья. Безоперационное лечение позвоночника и суставов: SVF, PRP терапия, мануальная терапия. 5000+ пациентов восстановлено. Запись: +7 (776) 020-21-40",
-  keywords: ["лечение позвоночника Караганда", "лечение суставов", "SVF терапия", "PRP терапия", "безоперационное лечение", "клиника Караганда"],
-  openGraph: {
-    title: "Sak Clinic — Лечение позвоночника и суставов без операций",
-    description: "Капитальный ремонт вашего здоровья. SVF и PRP терапия, мануальная терапия. Более 5000 пациентов восстановлено в Караганде.",
-    url: "https://sakclinic.kz",
-    siteName: "Sak Clinic",
-    images: [{
-      url: "https://sakclinic.kz/og-image.png",
-      width: 1200,
-      height: 630,
-      alt: "Sak Clinic - Лечение позвоночника и суставов"
-    }],
-    locale: "ru_RU",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sak Clinic - Лечение позвоночника и суставов",
-    description: "Капитальный ремонт вашего здоровья. 5000+ пациентов восстановлено в Караганде.",
-    images: ["https://sakclinic.kz/og-image.png"],
-  },
+    metadataBase: new URL(SITE_URL),
+    title: {
+        default: "Sak Clinic — лечение позвоночника и суставов в Караганде",
+        template: "%s",
+    },
+    applicationName: "Sak Clinic",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+        },
+    },
 };
 
-// Root layout - metadata only
 // The locale-specific layout (app/[locale]/layout.tsx) provides html/body tags
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return children;
+    return children;
 }

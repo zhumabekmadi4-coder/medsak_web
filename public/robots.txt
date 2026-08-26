@@ -1,8 +1,8 @@
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://sakclinic.kz/sitemap.xml
+User-agent: Yandex
+Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&fbclid&gclid
 
-# Disallow admin or private paths (if any in the future)
-# Disallow: /admin/
+Sitemap: https://sakclinic.kz/sitemap.xml

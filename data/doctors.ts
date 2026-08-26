@@ -1,53 +1,25 @@
+/**
+ * Presentation data for staff. Names, roles and biographies live in
+ * messages/*.json under `doctors_data.<id>` so both locales stay in step.
+ */
 
-export const doctors = [
-    {
-        id: "ruslan",
-        name: "Исатаев Руслан Сагитолаевич",
-        role: "Главный Врач",
-        specialty: "Травматолог-ортопед высшей категории",
-        experience: "Стаж 15 лет",
-        desc: "Специалист высшей категории с 15-летним опытом работы. Специализируется на лечении заболеваний опорно-двигательного аппарата, травм позвоночника и суставов. Эксперт в области безоперационного лечения грыж, артрозов, остеохондроза. Использует современные методы диагностики и комплексного подхода к реабилитации.",
-        image: "/doctors/isataev.jpg",
-        color: "bg-blue-100 text-blue-700"
-    },
-    {
-        id: "nurgali",
-        name: "Абжалиев Нургали Куатбаевич",
-        role: "Врач-реабилитолог",
-        specialty: "Врач-реабилитолог",
-        experience: "Стаж 7 лет",
-        desc: "Врач-реабилитолог с более чем 7-летним стажем. Эксперт в области восстановительной медицины и кинезиотерапии. Специализируется на восстановлении после травм опорно-двигательного аппарата, спортивных травм. Помогает пациентам вернуться к активной жизни через индивидуальные программы реабилитации.",
-        image: "/doctors/abzhaliyev.jpg",
-        color: "bg-teal-100 text-teal-700"
-    },
-    {
-        id: "aknur",
-        name: "Тұяқбаева Ақнұр Өтегенқызы",
-        role: "Специалист",
-        specialty: "Медицинская сестра-массажист",
-        experience: "Стаж 7 лет",
-        desc: "Медицинская сестра-массажист с 7-летним опытом работы. Специализируется на лечебном массаже и мануальной терапии. Профессионально владеет техниками классического, лечебного и восстановительного массажа. Проводит физиопроцедуры. Заботливые руки клиники.",
-        image: "/doctors/tuyakbaeva.jpg",
-        color: "bg-purple-100 text-purple-700"
-    },
-    {
-        id: "perizat",
-        name: "Перизат Хамитовна",
-        role: "Администратор",
-        specialty: "Координатор-администратор",
-        experience: "Стаж 5 лет",
-        desc: "Координатор-администратор клиники с 5-летним опытом. Поможет с записью на прием, ответит на все ваши вопросы, организует ваш визит. Первое дружелюбное лицо, которое встретит вас в клинике.",
-        image: "/doctors/perizat.jpg",
-        color: "bg-pink-100 text-pink-700"
-    },
-    {
-        id: "rustam",
-        name: "Тапи Рустам Ирекович",
-        role: "Спортивный врач",
-        specialty: "Кинезиотерапевт",
-        experience: "Стаж 10+ лет",
-        desc: "Спортивный врач и кинезиотерапевт. Эксперт в области восстановления спортсменов и людей с активным образом жизни. Специализируется на функциональной диагностике движений, коррекции двигательных паттернов и реабилитации после травм.",
-        image: "/doctors/tapi.jpg",
-        color: "bg-cyan-100 text-cyan-700"
-    }
+export type DoctorId = 'ruslan' | 'nurgali' | 'aknur' | 'rustam' | 'perizat';
+
+export type Doctor = {
+    id: DoctorId;
+    image: string;
+    color: string;
+};
+
+/** Medical staff — shown in the "Doctors" section. */
+export const doctors: Doctor[] = [
+    { id: "ruslan", image: "/doctors/isataev.jpg", color: "bg-blue-100 text-blue-700" },
+    { id: "nurgali", image: "/doctors/abzhaliyev.jpg", color: "bg-teal-100 text-teal-700" },
+    { id: "rustam", image: "/doctors/tapi.jpg", color: "bg-cyan-100 text-cyan-700" },
+    { id: "aknur", image: "/doctors/tuyakbaeva.jpg", color: "bg-purple-100 text-purple-700" },
+];
+
+/** Non-medical staff — listed separately so the "Doctors" heading stays true. */
+export const administration: Doctor[] = [
+    { id: "perizat", image: "/doctors/perizat.jpg", color: "bg-pink-100 text-pink-700" },
 ];

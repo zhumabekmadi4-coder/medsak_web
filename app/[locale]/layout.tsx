@@ -1,22 +1,24 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { Figtree, Noto_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
+import { Navbar } from "@/components/landing/Navbar";
+import { Contact } from "@/components/landing/Contact";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { MobileStickyNav } from "@/components/layout/MobileStickyNav";
 import { Analytics } from "@/components/Analytics";
+import { StructuredData } from "@/components/StructuredData";
+import { doctors, administration } from "@/data/doctors";
 
-const figtree = Figtree({
-    subsets: ["latin"],
-    variable: "--font-figtree",
-    display: "swap",
-});
-
+// Figtree was dropped: it ships no Cyrillic, so every Russian and Kazakh
+// heading fell back to a system font while still costing a preload.
+// cyrillic-ext carries ә ғ қ ң ө ұ ү һ — without it Kazakh text renders in a
+// second typeface mid-word.
 const notoSans = Noto_Sans({
-    subsets: ["latin", "cyrillic"],
+    subsets: ["latin", "cyrillic", "cyrillic-ext"],
     variable: "--font-noto-sans",
     display: "swap",
 });
@@ -32,75 +34,71 @@ export default async function LocaleLayout({
     children: React.ReactNode;
     params: Promise<{ locale: string }>;
 }) {
-    // Await params to get locale (Next.js 15 requirement)
     const { locale } = await params;
 
-    // Ensure that the incoming `locale` is valid
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (!routing.locales.includes(locale as any)) {
+    if (!hasLocale(routing.locales, locale)) {
         notFound();
     }
 
-    // Providing all messages to the client
-    // side is the easiest way to get started
+    // Required for static rendering: without it next-intl reads headers() and
+    // every route becomes dynamic, which also breaks `output: 'export'`.
+    setRequestLocale(locale);
+
     const messages = await getMessages();
+    const tDoctors = await getTranslations('doctors_data');
+    const tA11y = await getTranslations('a11y');
+
+    const doctorNames = Object.fromEntries(
+        [...doctors, ...administration].map((person) => [
+            person.id,
+            {
+                name: tDoctors(`${person.id}.name`),
+                specialty: tDoctors(`${person.id}.specialty`),
+            },
+        ])
+    );
 
     return (
         <html lang={locale} suppressHydrationWarning className="bg-transparent">
             <body
                 className={cn(
-                    "min-h-screen font-sans antialiased relative bg-transparent overflow-x-hidden",
-                    figtree.variable,
+                    "min-h-screen font-sans antialiased relative bg-background overflow-x-hidden",
                     notoSans.variable
                 )}
             >
+                <a
+                    href="#main"
+                    className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-6 focus:py-4 focus:text-lg focus:font-bold focus:text-white"
+                >
+                    {tA11y('skipToContent')}
+                </a>
+
                 {/* Site-wide Fixed Background */}
-                <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+                <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none" aria-hidden="true">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src="/spine-bg-right.png"
-                        alt="Background"
-                        className="w-full h-full object-cover object-right md:object-center opacity-40 md:opacity-80 transition-opacity duration-500"
+                        alt=""
+                        width={1280}
+                        height={720}
+                        fetchPriority="high"
+                        decoding="async"
+                        className="w-full h-full object-cover object-right md:object-center opacity-40 md:opacity-70"
                     />
-                    <div className="absolute inset-0 bg-white/40" />
+                    {/* Heavier scrim: headline text sits directly on this image and
+                        its contrast would otherwise depend on the photo's pixels. */}
+                    <div className="absolute inset-0 bg-white/70 md:bg-white/55" />
                 </div>
 
-                {/* Hreflang tags for language versions */}
-                <link rel="alternate" hrefLang="ru" href={`https://sakclinic.kz/ru`} />
-                <link rel="alternate" hrefLang="kk" href={`https://sakclinic.kz/kk`} />
-                <link rel="alternate" hrefLang="x-default" href={`https://sakclinic.kz/ru`} />
-
-                {/* Schema.org Structured Data */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            "@context": "https://schema.org",
-                            "@type": "MedicalClinic",
-                            "name": "Sak Clinic",
-                            "description": "Клиника восстановительной медицины. Лечение позвоночника и суставов без операций.",
-                            "url": "https://sakclinic.kz",
-                            "telephone": "+77760202140",
-                            "email": "sakclinic2025@gmail.com",
-                            "address": {
-                                "@type": "PostalAddress",
-                                "streetAddress": "ул. Абая 81",
-                                "addressLocality": "Караганда",
-                                "addressCountry": "KZ"
-                            },
-                            "openingHoursSpecification": {
-                                "@type": "OpeningHoursSpecification",
-                                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                                "opens": "09:00",
-                                "closes": "18:00"
-                            },
-                            "priceRange": "7000₸ - 250000₸",
-                            "medicalSpecialty": ["Orthopedics", "PhysicalTherapy", "PainMedicine"]
-                        })
-                    }}
-                />
+                <StructuredData locale={locale} doctorNames={doctorNames} />
 
                 <NextIntlClientProvider messages={messages}>
-                    {children}
+                    <Navbar />
+                    {/* pb-24 keeps the sticky mobile bar from covering page content */}
+                    <main id="main" className="flex min-h-screen flex-col pb-24 md:pb-0">
+                        {children}
+                    </main>
+                    <Contact />
                     <MobileStickyNav />
                     <WhatsAppButton />
                     <Analytics />

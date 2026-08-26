@@ -1,32 +1,33 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/site-config';
+
+const locales = ['ru', 'kk'] as const;
+
+// lastModified is pinned by hand: `new Date()` would move on every deploy even
+// when nothing changed, and search engines stop trusting the signal.
+const routes = [
+    { path: '', priority: 1.0, changeFrequency: 'weekly' as const, lastModified: '2026-08-26' },
+    { path: '/pricing', priority: 0.9, changeFrequency: 'weekly' as const, lastModified: '2026-08-26' },
+    { path: '/about', priority: 0.7, changeFrequency: 'monthly' as const, lastModified: '2026-08-26' },
+    { path: '/contact', priority: 0.6, changeFrequency: 'monthly' as const, lastModified: '2026-08-26' },
+    { path: '/license', priority: 0.4, changeFrequency: 'yearly' as const, lastModified: '2026-08-26' },
+    { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' as const, lastModified: '2026-08-26' },
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://sakclinic.kz';
-    const locales = ['ru', 'kk'];
-    const lastModified = new Date();
-
-    // Generate sitemap entries for all pages and language versions
-    const routes = [
-        '',           // Homepage
-        // Add more routes here as your site grows
-        // '/about',
-        // '/services',
-        // '/contact',
-    ];
-
-    const sitemap: MetadataRoute.Sitemap = [];
-
-    // Generate entries for each route and locale
-    routes.forEach((route) => {
-        locales.forEach((locale) => {
-            sitemap.push({
-                url: `${baseUrl}/${locale}${route}`,
-                lastModified,
-                changeFrequency: route === '' ? 'weekly' : 'monthly',
-                priority: route === '' ? 1.0 : 0.8,
-            });
-        });
-    });
-
-    return sitemap;
+    return routes.flatMap(({ path, priority, changeFrequency, lastModified }) =>
+        locales.map((locale) => ({
+            url: `${SITE_URL}/${locale}${path}`,
+            lastModified: new Date(lastModified),
+            changeFrequency,
+            priority,
+            alternates: {
+                languages: {
+                    ru: `${SITE_URL}/ru${path}`,
+                    kk: `${SITE_URL}/kk${path}`,
+                    'x-default': `${SITE_URL}/ru${path}`,
+                },
+            },
+        }))
+    );
 }

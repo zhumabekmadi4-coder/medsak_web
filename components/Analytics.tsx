@@ -2,19 +2,22 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
-// Type definitions for Yandex Metrica
+export type AnalyticsParams = Record<string, string | number | boolean | undefined>;
+
 declare global {
     interface Window {
-        ym?: (id: number, method: string, ...args: any[]) => void;
-        gtag?: (...args: any[]) => void;
+        ym?: (id: number, method: string, ...args: unknown[]) => void;
+        gtag?: (command: string, target: string, params?: AnalyticsParams) => void;
     }
 }
 
 export function Analytics() {
+    // usePathname only — useSearchParams would opt every route out of static
+    // rendering (and break `output: 'export'`). Both counters read the query
+    // string from location themselves.
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
     // Get IDs from environment - these are embedded at build time
     const yandexId = process.env.NEXT_PUBLIC_YANDEX_METRICA_ID || '';
@@ -24,20 +27,16 @@ export function Analytics() {
     useEffect(() => {
         if (!pathname) return;
 
-        const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+        const url = pathname + window.location.search;
 
-        // Yandex Metrica page view
         if (yandexId && window.ym) {
             window.ym(Number(yandexId), 'hit', url);
         }
 
-        // Google Analytics page view
         if (gaId && window.gtag) {
-            window.gtag('config', gaId, {
-                page_path: url,
-            });
+            window.gtag('config', gaId, { page_path: url });
         }
-    }, [pathname, searchParams, yandexId, gaId]);
+    }, [pathname, yandexId, gaId]);
 
     // Don't render if no IDs are configured
     if (!yandexId && !gaId) {
@@ -61,16 +60,25 @@ export function Analytics() {
                 (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
                 ym(${yandexId}, "init", {
-                  clickmap:true,
+                  defer:true,
+                  clickmap:false,
                   trackLinks:true,
                   accurateTrackBounce:true,
-                  webvisor:true
+                  webvisor:false
                 });
               `,
                         }}
                     />
+                    {/*
+                      defer:true — the effect above sends the first hit, so init must not
+                      send its own (the visit used to be counted twice).
+                      webvisor/clickmap disabled: session recording on a medical site
+                      captures what a visitor read about their condition, which is health
+                      data leaving Kazakhstan without consent or a privacy policy.
+                    */}
                     <noscript>
                         <div>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={`https://mc.yandex.ru/watch/${yandexId}`}
                                 style={{ position: 'absolute', left: '-9999px' }}
@@ -97,7 +105,7 @@ export function Analytics() {
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', '${gaId}', {
-                  page_path: window.location.pathname,
+                  send_page_view: false
                 });
               `,
                         }}
@@ -109,19 +117,16 @@ export function Analytics() {
 }
 
 // Helper function to track custom events
-export function trackEvent(
-    eventName: string,
-    eventParams?: Record<string, any>
-) {
+export function trackEvent(eventName: string, eventParams?: AnalyticsParams) {
+    if (typeof window === 'undefined') return;
+
     const yandexId = process.env.NEXT_PUBLIC_YANDEX_METRICA_ID || '';
     const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 
-    // Yandex Metrica event
     if (yandexId && window.ym) {
         window.ym(Number(yandexId), 'reachGoal', eventName, eventParams);
     }
 
-    // Google Analytics event
     if (gaId && window.gtag) {
         window.gtag('event', eventName, eventParams);
     }

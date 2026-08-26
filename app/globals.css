@@ -10,13 +10,16 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-noto-sans), sans-serif;
-  --font-heading: var(--font-figtree), sans-serif;
+  --font-heading: var(--font-noto-sans), sans-serif;
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
@@ -52,13 +55,13 @@
   /* Slate 800 */
 
   /* Primary - Medical Blue */
-  --primary: #3B82F6;
-  /* Blue 500 */
+  --primary: #1D4ED8;
+  /* Blue 700 - 7.02:1 on white */
   --primary-foreground: #FFFFFF;
 
   /* Secondary - Soft Blue */
-  --secondary: #60A5FA;
-  /* Blue 400 */
+  --secondary: #1E40AF;
+  /* Blue 800 - 9.0:1 on white */
   --secondary-foreground: #FFFFFF;
 
   /* Accent / CTA - Deep Blue */
@@ -80,10 +83,14 @@
   --popover-foreground: #1E293B;
 
   /* Borders & Inputs */
+  --destructive: #B91C1C;
+  /* Red 700 - 6.4:1 on white */
+  --destructive-foreground: #FFFFFF;
+
   --border: #E2E8F0;
   /* Slate 200 */
   --input: #E2E8F0;
-  --ring: #3B82F6;
+  --ring: #1D4ED8;
 
   /* Charts (Preserved/Updated) */
   --chart-1: #3B82F6;
@@ -133,7 +140,7 @@
   --border: #334155;
   /* Slate 700 */
   --input: #334155;
-  --ring: #3B82F6;
+  --ring: #1D4ED8;
 
   --sidebar: #0F172A;
   --sidebar-foreground: #F8FAFC;
@@ -171,10 +178,58 @@
   /* Global UI Rules */
   button:not(:disabled),
   [role="button"]:not(:disabled) {
-    @apply cursor-pointer transition-all duration-200 active:scale-95;
+    @apply cursor-pointer transition-[color,background-color,border-color,box-shadow,transform] duration-200 active:scale-95;
   }
 
   .card-hover {
     @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg;
+  }
+}
+/* Visible keyboard focus.
+   The shadcn default was `ring-ring/50` — a 50% transparent blue measuring
+   1.83:1, effectively no indicator at all. */
+@layer base {
+  :where(a, button, [role="button"], input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* Reduced motion.
+   The site has a dozen sources of movement — scroll-triggered cascades, a
+   parallax background, smooth scrolling. This clinic treats cervical spine
+   conditions, where that kind of motion can trigger dizziness. */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    transition: none !important;
+  }
+
+  button:not(:disabled):active,
+  [role="button"]:not(:disabled):active {
+    transform: none !important;
+  }
+}
+
+/* Windows High Contrast Mode: clipped-gradient text renders as transparent,
+   which would erase the words entirely. */
+@media (forced-colors: active) {
+  .bg-clip-text {
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    background-image: none !important;
+    color: CanvasText !important;
+    -webkit-text-fill-color: CanvasText !important;
   }
 }

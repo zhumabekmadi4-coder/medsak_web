@@ -1,173 +1,52 @@
+/**
+ * Presentation data for services. All user-facing text lives in messages/*.json
+ * and is looked up by `id` — keeping Russian copies here produced a second,
+ * unread source of truth that had already drifted out of sync.
+ */
 
+export const SERVICE_IDS = [
+    'consultation',
+    'spine',
+    'joints',
+    'svf',
+    'prp',
+    'ultrasound',
+    'blockade',
+    'shockwave',
+    'magnet',
+    'ultrasound_therapy',
+    'stimulation',
+    'laser',
+    'exercise',
+    'vtes',
+] as const;
 
+export type ServiceId = (typeof SERVICE_IDS)[number];
 
-export const services = [
-    {
-        id: "consultation",
-        title: "Первичная Консультация",
-        price: "10 000 ₸",
-        rawPrice: 10000,
-        desc: "Осмотр врача, узи сустава или одна пробная процедура.",
-        fullDesc: "Включает полный осмотр опорно-двигательного аппарата, анализ снимков МРТ/КТ, УЗИ сустава или одну пробную процедуру лечения.",
-        iconPath: "/icons/consultation.png",
-        color: "text-slate-600",
-        bg: "bg-slate-100",
-        featured: false
-    },
-    {
-        id: "spine",
-        title: "Комплексная программа восстановления позвоночника",
-        price: "35 000 ₸",
-        rawPrice: 35000,
-        desc: "Эффективная лечебно-реабилитационная программа для позвоночника.",
-        fullDesc: "Эффективная лечебно-реабилитационная программа для позвоночника, направленная на устранение боли в спине, восстановление подвижности, улучшение осанки и общего самочувствия.\n\nВ программу входят:\n\n✨ аппаратная физиотерапия для глубокого воздействия на ткани позвоночника\n✨ лечебный массаж для снятия мышечного напряжения\n✨ иглорефлексотерапия для уменьшения боли и мышечных спазмов\n✨ PRP-терапия (плазмотерапия) для стимуляции восстановления межпозвоночных тканей\n✨ витаминотерапия для поддержки нервной системы и опорно-двигательного аппарата\n✨ лечебная физкультура (ЛФК) для укрепления мышечного корсета и стабилизации позвоночника\n\n💚 Стоимость указана за один день комплексного лечебного сеанса.\nСхема лечения подбирается индивидуально врачом после консультации и диагностики.\n\nРезультат — снижение болевого синдрома, восстановление гибкости позвоночника, лёгкость движений и комфорт в повседневной жизни.",
-        iconPath: "/icons/spine.png",
-        color: "text-blue-600",
-        bg: "bg-blue-50",
-        featured: true
-    },
-    {
-        id: "joints",
-        title: "Комплексная программа восстановления суставов",
-        price: "25 000 ₸",
-        rawPrice: 25000,
-        desc: "Современная комплексная терапия для лечения и восстановления суставов.",
-        fullDesc: "Современная комплексная терапия для лечения и восстановления суставов, направленная на снижение боли и воспаления, улучшение подвижности и замедление дегенеративных процессов. Программа воздействует на причину заболевания и помогает вернуть свободу движений.\n\nВ программу входят:\n\n✨ аппаратная физиотерапия для глубокого воздействия на суставы\n✨ лечебный и восстановительный массаж\n✨ иглорефлексотерапия для снятия спазмов и улучшения кровообращения\n✨ PRP-терапия (плазмотерапия) для стимуляции регенерации хрящевой ткани\n✨ витаминотерапия для питания суставов и связок\n✨ лечебная физкультура (ЛФК) для укрепления суставов и повышения их подвижности\n\n💚 Стоимость указана за один день комплексного лечебного сеанса.\nПолный план и последовательность процедур подбираются индивидуально врачом после консультации и диагностики.\n\nРезультат — уменьшение болевого синдрома, восстановление функции суставов и улучшение качества жизни.",
-        iconPath: "/icons/joints.png",
-        color: "text-teal-600",
-        bg: "bg-teal-50",
-        featured: true
-    },
-    {
-        id: "svf",
-        title: "SVF Терапия (Стволовые)",
-        price: "250 000 ₸",
-        rawPrice: 250000,
-        desc: "Премиум восстановление хрящевой ткани за 1 процедуру.",
-        fullDesc: "Инъекция стромально-васкулярной фракции (SVF) из собственной жировой ткани пациента. Мощная регенерация суставов.",
-        iconPath: "/icons/svf.png",
-        color: "text-rose-600",
-        bg: "bg-rose-50",
-        featured: true
-    },
-    {
-        id: "prp",
-        title: "PRP Терапия",
-        price: "25 000 ₸",
-        rawPrice: 25000,
-        desc: "Плазмолифтинг суставов для ускорения заживления.",
-        fullDesc: "Введение обогащенной тромбоцитами плазмы пациента. Снимает воспаление и запускает процессы роста тканей.",
-        iconPath: "/icons/prp.png",
-        color: "text-emerald-600",
-        bg: "bg-emerald-50",
-        featured: false
-    },
-    {
-        id: "ultrasound",
-        title: "УЗИ суставов",
-        price: "10 000 ₸",
-        rawPrice: 10000,
-        desc: "Точная диагностика состояния суставов и связок.",
-        fullDesc: "Ультразвуковое исследование суставов (УЗИ). Позволяет увидеть воспаление, жидкость, разрывы связок и состояние хряща без облучения.",
-        iconPath: "/icons/ultrasound.png",
-        color: "text-sky-600",
-        bg: "bg-sky-50",
-        featured: true
-    },
-    {
-        id: "blockade",
-        title: "Блокада сустава",
-        price: "10 000 ₸",
-        rawPrice: 10000,
-        desc: "Мгновенное снятие острой боли и воспаления.",
-        fullDesc: "Медикаментозная блокада для быстрого купирования болевого синдрома. Выполняется под контролем врача.",
-        iconPath: "/icons/injection.png",
-        color: "text-amber-600",
-        bg: "bg-amber-50",
-        featured: false
-    },
-    {
-        id: "shockwave",
-        title: "УВТ",
-        price: "",
-        rawPrice: 0,
-        desc: "Ударно-волновая терапия для лечения хронической боли.",
-        fullDesc: "Эффективный метод лечения пяточных шпор, эпикондилитов и мышечных спазмов.",
-        iconPath: "/icons/shockwave.png",
-        color: "text-orange-600",
-        bg: "bg-orange-50",
-        featured: false
-    },
-    {
-        id: "magnet",
-        title: "Магнит",
-        price: "",
-        rawPrice: 0,
-        desc: "Магнитотерапия для снятия воспаления и отеков.",
-        fullDesc: "Улучшает микроциркуляцию и ускоряет восстановление тканей.",
-        iconPath: "/icons/magnet.png",
-        color: "text-violet-600",
-        bg: "bg-violet-50",
-        featured: false
-    },
-    {
-        id: "ultrasound_therapy",
-        title: "Ультразвук",
-        price: "",
-        rawPrice: 0,
-        desc: "Лечебный ультразвук и фонофорез.",
-        fullDesc: "Глубокий микромассаж тканей и введение лекарств с помощью ультразвука.",
-        iconPath: "/icons/ultrasound-therapy.png",
-        color: "text-blue-600",
-        bg: "bg-blue-50",
-        featured: false
-    },
-    {
-        id: "stimulation",
-        title: "Миостимуляция",
-        price: "",
-        rawPrice: 0,
-        desc: "Электростимуляция для укрепления мышц.",
-        fullDesc: "Восстановление тонуса мышц после травм и операций.",
-        iconPath: "/icons/stimulation.png",
-        color: "text-cyan-600",
-        bg: "bg-cyan-50",
-        featured: false
-    },
-    {
-        id: "laser",
-        title: "Лазер",
-        price: "",
-        rawPrice: 0,
-        desc: "Лазеротерапия для регенерации тканей.",
-        fullDesc: "Снимает боль, воспаление и ускоряет заживление.",
-        iconPath: "/icons/laser.png",
-        color: "text-red-600",
-        bg: "bg-red-50",
-        featured: false
-    },
-    {
-        id: "exercise",
-        title: "ЛФК",
-        price: "",
-        rawPrice: 0,
-        desc: "Лечебная физкультура под контролем инструктора.",
-        fullDesc: "Индивидуальные занятия для восстановления подвижности суставов.",
-        iconPath: "/icons/exercise.png",
-        color: "text-green-600",
-        bg: "bg-green-50",
-        featured: false
-    },
-    {
-        id: "vtes",
-        title: "ВТЭС",
-        price: "",
-        rawPrice: 0,
-        desc: "Внутритканевая электростимуляция по Герасимову.",
-        fullDesc: "Лечение болевых синдромов позвоночника и суставов.",
-        iconPath: "/icons/vtes.png",
-        color: "text-yellow-600",
-        bg: "bg-yellow-50",
-        featured: false
-    }
+export type Service = {
+    id: ServiceId;
+    /** Formatted price, empty when the price is set during consultation. */
+    price: string;
+    rawPrice: number;
+    iconPath: string;
+    bg: string;
+    /** Shown on the landing page, not only in the price list. */
+    featured: boolean;
+};
+
+export const services: Service[] = [
+    { id: "consultation", price: "10 000 ₸", rawPrice: 10000, iconPath: "/icons/consultation.png", bg: "bg-slate-100", featured: false },
+    { id: "spine", price: "35 000 ₸", rawPrice: 35000, iconPath: "/icons/spine.png", bg: "bg-blue-50", featured: true },
+    { id: "joints", price: "25 000 ₸", rawPrice: 25000, iconPath: "/icons/joints.png", bg: "bg-teal-50", featured: true },
+    { id: "svf", price: "250 000 ₸", rawPrice: 250000, iconPath: "/icons/svf.png", bg: "bg-rose-50", featured: true },
+    { id: "prp", price: "25 000 ₸", rawPrice: 25000, iconPath: "/icons/prp.png", bg: "bg-emerald-50", featured: false },
+    { id: "ultrasound", price: "10 000 ₸", rawPrice: 10000, iconPath: "/icons/ultrasound.png", bg: "bg-sky-50", featured: true },
+    { id: "blockade", price: "10 000 ₸", rawPrice: 10000, iconPath: "/icons/injection.png", bg: "bg-amber-50", featured: false },
+    { id: "shockwave", price: "", rawPrice: 0, iconPath: "/icons/shockwave.png", bg: "bg-orange-50", featured: false },
+    { id: "magnet", price: "", rawPrice: 0, iconPath: "/icons/magnet.png", bg: "bg-violet-50", featured: false },
+    { id: "ultrasound_therapy", price: "", rawPrice: 0, iconPath: "/icons/ultrasound-therapy.png", bg: "bg-blue-50", featured: false },
+    { id: "stimulation", price: "", rawPrice: 0, iconPath: "/icons/stimulation.png", bg: "bg-cyan-50", featured: false },
+    { id: "laser", price: "", rawPrice: 0, iconPath: "/icons/laser.png", bg: "bg-red-50", featured: false },
+    { id: "exercise", price: "", rawPrice: 0, iconPath: "/icons/exercise.png", bg: "bg-green-50", featured: false },
+    { id: "vtes", price: "", rawPrice: 0, iconPath: "/icons/vtes.png", bg: "bg-yellow-50", featured: false },
 ];

@@ -2,12 +2,16 @@ import { defineRouting } from 'next-intl/routing';
 import { createNavigation } from 'next-intl/navigation';
 
 export const routing = defineRouting({
-    // A list of all locales that are supported
-    locales: ['ru', 'kk'],
+    locales: ['ru', 'kk'] as const,
+    defaultLocale: 'ru',
 
-    // Used when no locale matches
-    defaultLocale: 'ru'
+    // Stated explicitly: with a static export there is no server to strip the
+    // prefix, so every URL must carry /ru or /kk. Switching this to 'as-needed'
+    // would 404 the whole site.
+    localePrefix: 'always',
 });
+
+export type Locale = (typeof routing.locales)[number];
 
 // Lightweight wrappers around Next.js' navigation APIs
 // that will consider the routing configuration

@@ -1,55 +1,54 @@
 "use client";
 
-import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useTransition } from 'react';
+import { useRouter, usePathname } from '@/i18n/routing';
+
+const LOCALES = [
+    { code: 'ru', label: 'РУС', full: 'Русский' },
+    { code: 'kk', label: 'ҚАЗ', full: 'Қазақша' },
+] as const;
 
 export function LanguageSwitcher() {
     const locale = useLocale();
+    // Locale-aware router from @/i18n/routing: the previous hand-rolled path
+    // surgery on next/navigation dropped the query string, so switching
+    // language on a page opened from an ad lost its UTM tags.
     const router = useRouter();
     const pathname = usePathname();
     const [isPending, startTransition] = useTransition();
+    const t = useTranslations('nav');
 
     const switchLanguage = (newLocale: string) => {
         if (locale === newLocale) return;
-
         startTransition(() => {
-            // Remove current locale from pathname and add new locale
-            const segments = pathname.split('/').filter(Boolean);
-
-            // Remove old locale if present
-            if (segments[0] === 'ru' || segments[0] === 'kk') {
-                segments.shift();
-            }
-
-            // Build new path
-            const newPath = `/${newLocale}${segments.length > 0 ? '/' + segments.join('/') : ''}`;
-            router.replace(newPath);
+            router.replace(pathname, { locale: newLocale as 'ru' | 'kk' });
         });
     };
 
     return (
-        <div className="flex items-center gap-1 bg-slate-100 rounded-full p-1">
-            <button
-                onClick={() => switchLanguage('ru')}
-                disabled={isPending}
-                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${locale === 'ru'
+        <div
+            role="group"
+            aria-label={t('footerNav')}
+            className="flex items-center gap-1 bg-slate-100 rounded-full p-1"
+        >
+            {LOCALES.map(({ code, label, full }) => (
+                <button
+                    key={code}
+                    type="button"
+                    lang={code}
+                    onClick={() => switchLanguage(code)}
+                    disabled={isPending}
+                    aria-pressed={locale === code}
+                    aria-label={full}
+                    className={`min-h-[44px] min-w-[56px] px-4 text-base font-semibold rounded-full transition-colors ${locale === code
                         ? 'bg-white text-primary shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-            >
-                РУС
-            </button>
-            <button
-                onClick={() => switchLanguage('kk')}
-                disabled={isPending}
-                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${locale === 'kk'
-                        ? 'bg-white text-primary shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-            >
-                ҚАЗ
-            </button>
+                        : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
+                        }`}
+                >
+                    {label}
+                </button>
+            ))}
         </div>
     );
 }

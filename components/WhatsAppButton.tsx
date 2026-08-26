@@ -4,56 +4,58 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { trackEvent } from "./Analytics";
+import { waLink } from "@/lib/site-config";
 
 export const WhatsAppButton = () => {
     const t = useTranslations("whatsapp");
     const [showTooltip, setShowTooltip] = useState(false);
+    const [dismissed, setDismissed] = useState(false);
 
     useEffect(() => {
-        // Initial delay before showing tooltip
-        const initialTimer = setTimeout(() => {
-            setShowTooltip(true);
-            // Hide after 6 seconds
-            setTimeout(() => setShowTooltip(false), 6000);
-        }, 3000);
+        if (dismissed) return;
+        // Shown once, not every 30 seconds: a tooltip that keeps reappearing and
+        // cannot be dismissed is a distraction rather than a prompt.
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-        // Then show it every 30 seconds
-        const interval = setInterval(() => {
-            setShowTooltip(true);
-            setTimeout(() => setShowTooltip(false), 6000);
-        }, 30000);
-
-        return () => {
-            clearInterval(interval);
-            clearTimeout(initialTimer);
-        };
-    }, []);
+        const timer = setTimeout(() => setShowTooltip(true), 8000);
+        return () => clearTimeout(timer);
+    }, [dismissed]);
 
     return (
         <div className="hidden md:flex fixed bottom-6 right-6 z-50 flex-col items-end gap-2 isolate">
             <AnimatePresence>
                 {showTooltip && (
                     <motion.div
+                        id="wa-tooltip"
+                        role="status"
                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                        className="bg-white text-slate-800 px-4 py-3 rounded-2xl shadow-xl border border-slate-100 max-w-[220px] text-sm font-medium relative mb-1 pointer-events-none"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        className="bg-white text-slate-800 px-4 py-3 rounded-2xl shadow-xl border border-slate-200 max-w-[240px] text-base font-medium relative mb-1"
                     >
                         {t("tooltip")}
-                        <div className="absolute -bottom-1 right-6 w-3 h-3 bg-white transform rotate-45 border-b border-r border-slate-100"></div>
+                        <button
+                            type="button"
+                            onClick={() => { setShowTooltip(false); setDismissed(true); }}
+                            aria-label={t("dismissTooltip")}
+                            className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm leading-none"
+                        >
+                            ✕
+                        </button>
+                        <div className="absolute -bottom-1 right-6 w-3 h-3 bg-white transform rotate-45 border-b border-r border-slate-200"></div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
             <a
-                href="https://wa.me/77760202140"
+                href={waLink(t("waMessage"))}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-3.5 md:p-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center group"
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}
+                className="bg-[#128C7E] hover:bg-[#0e6f63] text-white p-3.5 md:p-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center group"
                 onClick={() => trackEvent('whatsapp_click', { location: 'floating_button' })}
-                aria-label="Contact us on WhatsApp"
+                aria-label={t("ariaLabel")}
+                aria-describedby={showTooltip ? "wa-tooltip" : undefined}
             >
                 <svg
                     viewBox="0 0 24 24"
