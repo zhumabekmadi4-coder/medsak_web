@@ -23,7 +23,9 @@ export function Team() {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                {/* Four medical staff — a 4-column row fills evenly, where a
+                    3-column grid left a single card stranded on its own line. */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
                     {doctors.map((doctor, index) => (
                         <PersonCard key={doctor.id} person={doctor} index={index} />
                     ))}
@@ -31,10 +33,19 @@ export function Team() {
 
                 {/* Administration listed apart so the "Doctors" heading stays accurate. */}
                 {administration.length > 0 && (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto mt-8">
-                        {administration.map((person, index) => (
-                            <PersonCard key={person.id} person={person} index={index} />
-                        ))}
+                    <div className="mt-16 max-w-6xl mx-auto">
+                        <h3 className="text-center text-lg font-semibold text-slate-700 mb-8">
+                            {t('adminTitle')}
+                        </h3>
+                        {/* Flex, not grid: with a single person a 4-column grid
+                            would park the card against the left edge. */}
+                        <div className="flex flex-wrap justify-center gap-8">
+                            {administration.map((person, index) => (
+                                <div key={person.id} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
+                                    <PersonCard person={person} index={index} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>

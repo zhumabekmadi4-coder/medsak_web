@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export function Testimonials() {
     const t = useTranslations('testimonials');
-    const items = ['1', '2'];
+    const items = ['1', '2', '3'];
 
     return (
         <section className="py-24 bg-slate-50 relative overflow-hidden" id="testimonials">
@@ -19,9 +19,10 @@ export function Testimonials() {
                     </p>
                 </div>
 
-                {/* Diagnoses removed from each card: publishing "name + condition"
-                    is patient health data, and a hardcoded 5-star rating is not data. */}
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {/* The clinic confirms these are real patients who also recorded
+                    video testimonials, so names and conditions stay. The hardcoded
+                    five-star row is gone — a rating nobody submitted is not data. */}
+                <div className="grid md:grid-cols-3 gap-8">
                     {items.map((id, i) => (
                         <motion.div
                             key={id}
@@ -38,6 +39,7 @@ export function Testimonials() {
                                     </p>
                                     <div className="pt-4 border-t border-slate-100">
                                         <p className="font-bold text-slate-900">{t(`items.${id}.name`)}</p>
+                                        <p className="text-sm text-primary font-medium">{t(`items.${id}.problem`)}</p>
                                     </div>
                                 </CardContent>
                             </Card>
