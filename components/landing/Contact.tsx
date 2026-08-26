@@ -56,7 +56,7 @@ export function Contact({ as = "footer", headingLevel = 2 }: ContactProps = {}) 
                     <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 h-[400px] relative bg-slate-800">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src="/map-preview.png"
+                            src="/map-preview.webp"
                             alt={t('mapAlt')}
                             width={800}
                             height={400}

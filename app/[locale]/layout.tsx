@@ -75,16 +75,19 @@ export default async function LocaleLayout({
 
                 {/* Site-wide Fixed Background */}
                 <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none" aria-hidden="true">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                        src="/spine-bg-right.png"
-                        alt=""
-                        width={1280}
-                        height={720}
-                        fetchPriority="high"
-                        decoding="async"
-                        className="w-full h-full object-cover object-right md:object-center opacity-40 md:opacity-70"
-                    />
+                    <picture>
+                        <source media="(max-width: 768px)" srcSet="/spine-bg-right-640.webp" type="image/webp" />
+                        <source srcSet="/spine-bg-right.webp" type="image/webp" />
+                        <img
+                            src="/spine-bg-right.webp"
+                            alt=""
+                            width={1280}
+                            height={1280}
+                            fetchPriority="high"
+                            decoding="async"
+                            className="w-full h-full object-cover object-right md:object-center opacity-40 md:opacity-70"
+                        />
+                    </picture>
                     {/* Heavier scrim: headline text sits directly on this image and
                         its contrast would otherwise depend on the photo's pixels. */}
                     <div className="absolute inset-0 bg-white/70 md:bg-white/55" />

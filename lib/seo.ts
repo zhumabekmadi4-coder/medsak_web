@@ -112,13 +112,13 @@ export function buildMetadata(locale: Locale, page: PageKey): Metadata {
             description,
             locale: locale === "kk" ? "kk_KZ" : "ru_RU",
             alternateLocale: locale === "kk" ? ["ru_RU"] : ["kk_KZ"],
-            images: [{ url: "/og-image.png", width: 1024, height: 1024, alt: OG_ALT[locale] }],
+            images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: OG_ALT[locale] }],
         },
         twitter: {
             card: "summary_large_image",
             title,
             description,
-            images: ["/og-image.png"],
+            images: ["/og-image.jpg"],
         },
     };
 }

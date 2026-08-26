@@ -91,7 +91,7 @@ export function Navbar() {
                     <Link href="/" className="flex items-center gap-3">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src="/logo.png"
+                            src="/logo.webp"
                             alt="Sak Clinic"
                             width={48}
                             height={48}

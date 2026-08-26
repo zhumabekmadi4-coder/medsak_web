@@ -13,13 +13,13 @@ export type Doctor = {
 
 /** Medical staff — shown in the "Doctors" section. */
 export const doctors: Doctor[] = [
-    { id: "ruslan", image: "/doctors/isataev.jpg", color: "bg-blue-100 text-blue-700" },
-    { id: "nurgali", image: "/doctors/abzhaliyev.jpg", color: "bg-teal-100 text-teal-700" },
-    { id: "rustam", image: "/doctors/tapi.jpg", color: "bg-cyan-100 text-cyan-700" },
-    { id: "aknur", image: "/doctors/tuyakbaeva.jpg", color: "bg-purple-100 text-purple-700" },
+    { id: "ruslan", image: "/doctors/isataev.webp", color: "bg-blue-100 text-blue-700" },
+    { id: "nurgali", image: "/doctors/abzhaliyev.webp", color: "bg-teal-100 text-teal-700" },
+    { id: "rustam", image: "/doctors/tapi.webp", color: "bg-cyan-100 text-cyan-700" },
+    { id: "aknur", image: "/doctors/tuyakbaeva.webp", color: "bg-purple-100 text-purple-700" },
 ];
 
 /** Non-medical staff — listed separately so the "Doctors" heading stays true. */
 export const administration: Doctor[] = [
-    { id: "perizat", image: "/doctors/perizat.jpg", color: "bg-pink-100 text-pink-700" },
+    { id: "perizat", image: "/doctors/perizat.webp", color: "bg-pink-100 text-pink-700" },
 ];

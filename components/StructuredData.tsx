@@ -23,8 +23,8 @@ export function StructuredData({
                 alternateName: ["Сак Клиник", "Sak Clinic Караганда"],
                 description: DESCRIPTION[locale] ?? DESCRIPTION.ru,
                 url: `${SITE_URL}/${locale}`,
-                logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
-                image: [`${SITE_URL}/og-image.png`],
+                logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.webp` },
+                image: [`${SITE_URL}/og-image.jpg`],
                 telephone: SITE.phone.raw,
                 email: SITE.email,
                 // Was "7000₸ - 250000₸" — no such price exists; the cheapest
