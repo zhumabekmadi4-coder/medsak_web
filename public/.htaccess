@@ -11,6 +11,11 @@ RewriteEngine On
 RewriteCond %{HTTPS} !=on
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
+# www -> apex. Every canonical tag points at the www-less host, so serving both
+# means two live copies of the same page.
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
 # Site root -> Russian locale. public/index.html stays as a fallback for hosts
 # that do not allow rewrites.
 RewriteRule ^$ /ru/ [R=302,L]
