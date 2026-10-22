@@ -1,7 +1,7 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 export type AnalyticsParams = Record<string, string | number | boolean | undefined>;
@@ -10,8 +10,12 @@ declare global {
     interface Window {
         ym?: (id: number, method: string, ...args: unknown[]) => void;
         gtag?: (command: string, target: string, params?: AnalyticsParams) => void;
+        fbq?: (command: string, event: string, params?: AnalyticsParams) => void;
     }
 }
+
+// Meta Pixel ID supplied by the clinic; env var allows overriding per build.
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1800233397852518';
 
 export function Analytics() {
     // usePathname only — useSearchParams would opt every route out of static
@@ -22,10 +26,20 @@ export function Analytics() {
     // Get IDs from environment - these are embedded at build time
     const yandexId = process.env.NEXT_PUBLIC_YANDEX_METRICA_ID || '';
     const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+    const pixelId = META_PIXEL_ID;
+    const isFirstPixelView = useRef(true);
 
     // Track page views on route change
     useEffect(() => {
         if (!pathname) return;
+
+        // The pixel's init snippet sends the first PageView itself, so only
+        // client-side navigations are reported here.
+        if (isFirstPixelView.current) {
+            isFirstPixelView.current = false;
+        } else if (pixelId && window.fbq) {
+            window.fbq('track', 'PageView');
+        }
 
         const url = pathname + window.location.search;
 
@@ -36,10 +50,10 @@ export function Analytics() {
         if (gaId && window.gtag) {
             window.gtag('config', gaId, { page_path: url });
         }
-    }, [pathname, yandexId, gaId]);
+    }, [pathname, yandexId, gaId, pixelId]);
 
     // Don't render if no IDs are configured
-    if (!yandexId && !gaId) {
+    if (!yandexId && !gaId && !pixelId) {
         return null;
     }
 
@@ -110,6 +124,40 @@ export function Analytics() {
               `,
                         }}
                     />
+                </>
+            )}
+
+            {/* Meta Pixel */}
+            {pixelId && (
+                <>
+                    <Script
+                        id="meta-pixel"
+                        strategy="afterInteractive"
+                        dangerouslySetInnerHTML={{
+                            __html: `
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '${pixelId}');
+                fbq('track', 'PageView');
+              `,
+                        }}
+                    />
+                    <noscript>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            height="1"
+                            width="1"
+                            style={{ display: 'none' }}
+                            src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+                            alt=""
+                        />
+                    </noscript>
                 </>
             )}
         </>
