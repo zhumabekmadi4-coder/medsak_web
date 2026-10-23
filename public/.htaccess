@@ -35,9 +35,12 @@ RewriteRule ^(.*)$ /$1/ [R=301,L]
     Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
     Header always set X-Permitted-Cross-Domain-Policies "none"
 
+    # Meta hosts: connect.facebook.net is the pixel itself; www.facebook.com,
+    # static.xx.fbcdn.net and business.facebook.com are the Event Setup Tool
+    # overlay (signals/iwl.js), which Events Manager injects into the live site.
     # 'unsafe-inline' is unavoidable: Next and both analytics counters inject
     # inline scripts, and a static host cannot issue a nonce.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.com https://yastatic.net https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://mc.yandex.ru https://mc.yandex.com https://www.google-analytics.com https://www.facebook.com; font-src 'self' data:; connect-src 'self' https://mc.yandex.ru https://mc.yandex.com https://www.google-analytics.com https://region1.google-analytics.com https://www.facebook.com https://connect.facebook.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.com https://yastatic.net https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com https://static.xx.fbcdn.net; style-src 'self' 'unsafe-inline' https://www.facebook.com https://static.xx.fbcdn.net; img-src 'self' data: https://mc.yandex.ru https://mc.yandex.com https://www.google-analytics.com https://www.facebook.com https://static.xx.fbcdn.net; font-src 'self' data: https://static.xx.fbcdn.net; connect-src 'self' https://mc.yandex.ru https://mc.yandex.com https://www.google-analytics.com https://region1.google-analytics.com https://www.facebook.com https://connect.facebook.net https://business.facebook.com https://graph.facebook.com; frame-src https://www.facebook.com https://business.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
     # Hashed build assets never change under the same name.
     <FilesMatch "\.(js|css|woff2?)$">
