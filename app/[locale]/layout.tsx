@@ -11,6 +11,7 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { MobileStickyNav } from "@/components/layout/MobileStickyNav";
 import { Analytics } from "@/components/Analytics";
 import { StructuredData } from "@/components/StructuredData";
+import { MetaPixelHead, MetaPixelNoscript } from "@/components/MetaPixel";
 import { doctors, administration } from "@/data/doctors";
 
 // Figtree was dropped: it ships no Cyrillic, so every Russian and Kazakh
@@ -60,6 +61,9 @@ export default async function LocaleLayout({
 
     return (
         <html lang={locale} suppressHydrationWarning className="bg-transparent">
+            <head>
+                <MetaPixelHead />
+            </head>
             <body
                 className={cn(
                     "min-h-screen font-sans antialiased relative bg-background overflow-x-hidden",
@@ -93,6 +97,7 @@ export default async function LocaleLayout({
                     <div className="absolute inset-0 bg-white/70 md:bg-white/55" />
                 </div>
 
+                <MetaPixelNoscript />
                 <StructuredData locale={locale} doctorNames={doctorNames} />
 
                 <NextIntlClientProvider messages={messages}>

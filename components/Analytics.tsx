@@ -3,6 +3,7 @@
 import Script from 'next/script';
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { META_PIXEL_ID } from '@/components/MetaPixel';
 
 export type AnalyticsParams = Record<string, string | number | boolean | undefined>;
 
@@ -13,9 +14,6 @@ declare global {
         fbq?: (command: string, event: string, params?: AnalyticsParams) => void;
     }
 }
-
-// Meta Pixel ID supplied by the clinic; env var allows overriding per build.
-const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1800233397852518';
 
 export function Analytics() {
     // usePathname only — useSearchParams would opt every route out of static
@@ -33,7 +31,7 @@ export function Analytics() {
     useEffect(() => {
         if (!pathname) return;
 
-        // The pixel's init snippet sends the first PageView itself, so only
+        // The pixel snippet in <head> (MetaPixel.tsx) sends the first PageView, so only
         // client-side navigations are reported here.
         if (isFirstPixelView.current) {
             isFirstPixelView.current = false;
@@ -53,7 +51,7 @@ export function Analytics() {
     }, [pathname, yandexId, gaId, pixelId]);
 
     // Don't render if no IDs are configured
-    if (!yandexId && !gaId && !pixelId) {
+    if (!yandexId && !gaId) {
         return null;
     }
 
@@ -124,40 +122,6 @@ export function Analytics() {
               `,
                         }}
                     />
-                </>
-            )}
-
-            {/* Meta Pixel */}
-            {pixelId && (
-                <>
-                    <Script
-                        id="meta-pixel"
-                        strategy="afterInteractive"
-                        dangerouslySetInnerHTML={{
-                            __html: `
-                !function(f,b,e,v,n,t,s)
-                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window, document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${pixelId}');
-                fbq('track', 'PageView');
-              `,
-                        }}
-                    />
-                    <noscript>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            height="1"
-                            width="1"
-                            style={{ display: 'none' }}
-                            src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
-                            alt=""
-                        />
-                    </noscript>
                 </>
             )}
         </>
